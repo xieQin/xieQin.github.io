@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>前端项目接入代码测试覆盖率 | Cherish | 一个真实的现在可以开垦一万个美丽的未来</title>
+
+  
+  <meta name="author" content="xieQin">
+  
+
+  
+  <meta name="description" content="cherish blog">
+  
+
+  
+  
+  <meta name="keywords" content="Cypress">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="前端项目接入代码测试覆盖率">
+
+  <meta property="og:site_name" content="Cherish">
+
+  
+  <meta property="og:image" content="/favicon.ico">
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Cherish" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Cherish</a>
+    </h1>
+    <p class="site-description">一个真实的现在可以开垦一万个美丽的未来</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/links">链接</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>前端项目接入代码测试覆盖率</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2019/06/28/前端项目接入代码测试覆盖率/" rel="bookmark">
+        <time class="entry-date published" datetime="2019-06-28T10:38:20.000Z">
+          2019-06-28
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p><a href="https://docs.cypress.io/" target="_blank" rel="noopener">Cypress文档</a></p>
+<h1 id="e2e测试覆盖率demo"><a href="#e2e测试覆盖率demo" class="headerlink" title="e2e测试覆盖率demo"></a>e2e测试覆盖率demo</h1><p><a href="https://github.com/xieQin/code-coverage" target="_blank" rel="noopener">code-coverage</a></p>
+<h1 id="接入流程"><a href="#接入流程" class="headerlink" title="接入流程"></a>接入流程</h1><p>测试框架：Cypress</p>
+<p>框架文档地址：(<a href="https://www.cypress.io/" target="_blank" rel="noopener">https://www.cypress.io/</a>)</p>
+<p>引入Cypress<br>新项目：使用vue-cli3 创建项目，创建时勾选e2e测试，测试框架选择Cypress<br>已有项目：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install cypress --save-dev</span><br></pre></td></tr></table></figure></p>
+<p>添加测试覆盖率：<br>安装npm模块：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@cypress/code-coverage</span><br><span class="line">istanbul-instrumenter-loader</span><br><span class="line">istanbul-lib-coverage</span><br><span class="line">nyc</span><br><span class="line">babel-plugin-istanbul</span><br></pre></td></tr></table></figure></p>
+<p>增加.nycrc 文件，文件内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;extension&quot;: [&quot;.js&quot;, &quot;.vue&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>增加cypress.json, 文件内容如下：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"pluginsFile"</span>: <span class="string">"tests/e2e/plugins/index.js"</span>,</span><br><span class="line">  <span class="attr">"fixturesFolder"</span>: <span class="string">"tests/e2e/fixtures"</span>,</span><br><span class="line">  <span class="attr">"integrationFolder"</span>: <span class="string">"tests/e2e/integration"</span>,</span><br><span class="line">  <span class="attr">"screenshotsFolder"</span>: <span class="string">"tests/e2e/screenshots"</span>,</span><br><span class="line">  <span class="attr">"videosFolder"</span>: <span class="string">"tests/e2e/videos"</span>,</span><br><span class="line">  <span class="attr">"supportFile"</span>: <span class="string">"tests/e2e/support/index.js"</span>,</span><br><span class="line">  <span class="attr">"baseUrl"</span>: <span class="string">"http://localhost:8081"</span>,</span><br><span class="line">  <span class="attr">"viewportHeight"</span>: <span class="number">666</span>,</span><br><span class="line">  <span class="attr">"viewportWidth"</span>: <span class="number">375</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>tests/e2e/plugins/index.js 添加<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on(<span class="string">'task'</span>, <span class="built_in">require</span>(<span class="string">'@cypress/code-coverage/task'</span>))</span><br></pre></td></tr></table></figure></p>
+<p>tests/e2e/support/index.js 添加<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'@cypress/code-coverage/support'</span></span><br></pre></td></tr></table></figure></p>
+<p>Cypress文件目录<br>tests/e2e/fixtures/：测试辅助文件目录<br>tests/e2e/integration/ : 测试用例文件目录<br>tests/e2e/plugins/：插件目录<br>tests/e2e/support/：<br>  tests/e2e/support/command.js<br>  tests/e2e/support/index.js<br>cypress.json: cypress配置</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/Test/">Test</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Cypress/">Cypress</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2019 xieQin
+    
+  </p>
+</footer>
+    
+  </div>
+</div>
+</body>
+</html>

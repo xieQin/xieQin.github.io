@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>react-router使用指南 | Cherish | 一个真实的现在可以开垦一万个美丽的未来</title>
+
+  
+  <meta name="author" content="xieQin">
+  
+
+  
+  <meta name="description" content="cherish blog">
+  
+
+  
+  
+  <meta name="keywords" content="React">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="react-router使用指南">
+
+  <meta property="og:site_name" content="Cherish">
+
+  
+  <meta property="og:image" content="/favicon.ico">
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Cherish" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Cherish</a>
+    </h1>
+    <p class="site-description">一个真实的现在可以开垦一万个美丽的未来</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/links">链接</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>react-router使用指南</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2016/05/20/react-router使用指南/" rel="bookmark">
+        <time class="entry-date published" datetime="2016-05-20T09:00:39.000Z">
+          2016-05-20
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>react-router 作为react的路由插件，整体使用上我觉得比vue-router更为方便（除了变来变去的api），<br>特别是路由嵌套简洁很多。<br>原文见<a href="https://github.com/reactjs/react-router-tutorial" target="_blank" rel="noopener">react-router-tutorial</a></p>
+<h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install react-router --save</span><br></pre></td></tr></table></figure>
+<h2 id="二、显示路由"><a href="#二、显示路由" class="headerlink" title="二、显示路由"></a>二、显示路由</h2><p>在入口文件处</p>
+<ul>
+<li><p>引入<code>Router</code> 、<code>Route</code>、<code>hashHistory</code></p>
+</li>
+<li><p>render <code>Router</code></p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Router, Route, hashHistory &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"><span class="keyword">import</span> About <span class="keyword">from</span> <span class="string">'./modules/About'</span></span><br><span class="line"><span class="keyword">import</span> Repos <span class="keyword">from</span> <span class="string">'./modules/Repos'</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;/&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;/&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/about"</span> component=&#123;About&#125;/&gt;</span><br><span class="line">  &lt;<span class="regexp">/Router&gt;</span></span><br><span class="line"><span class="regexp">), document.getElementById('app'))</span></span><br></pre></td></tr></table></figure>
+<p>使用history api 管理路由时：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">import</span> &#123; Router, Route, browserHistory &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;browserHistory&#125;&gt;</span><br><span class="line">    &#123;<span class="comment">/* ... */</span>&#125;</span><br><span class="line">  &lt;<span class="regexp">/Router&gt;</span></span><br><span class="line"><span class="regexp">), document.getElementById('app'))</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="三、嵌套路由"><a href="#三、嵌套路由" class="headerlink" title="三、嵌套路由"></a>三、嵌套路由</h2><p>嵌套路由的实现相比vue-router中通过声明子路由的方法简洁直观了很多<br>路由的嵌套与对应组件的嵌套之间是存在对应关系，通过这种对应关系来实现嵌套路由<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;App&gt;       &#123;/*  /          */&#125;</span><br><span class="line">  &lt;Repos&gt;   &#123;/*  /repos     */&#125;</span><br><span class="line">    &lt;Repo/&gt; &#123;/*  /repos/123 */&#125;</span><br><span class="line">  &lt;/Repos&gt;</span><br><span class="line">&lt;/App&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;&gt;</span><br><span class="line">      &#123;<span class="comment">/* make them children of `App` */</span>&#125;</span><br><span class="line">      &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;/&gt;</span><br><span class="line">      &lt;Route path=<span class="string">"/about"</span> component=&#123;About&#125;/&gt;</span><br><span class="line">    &lt;<span class="regexp">/Route&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>Router&gt;</span><br><span class="line">), <span class="built_in">document</span>.getElementById(<span class="string">'app'</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Ghettohub Issues&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;ul role="nav"&gt;</span></span><br><span class="line"><span class="regexp">          &lt;li&gt;&lt;Link to="/</span>about<span class="string">"&gt;About&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">          &lt;li&gt;&lt;Link to="</span>/repos<span class="string">"&gt;Repos&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">        &lt;/ul&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &#123;/* add this */&#125;</span></span><br><span class="line"><span class="string">        &#123;this.props.children&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">    )</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">// ...</span></span><br></pre></td></tr></table></figure>
+<h2 id="四、导航样式"><a href="#四、导航样式" class="headerlink" title="四、导航样式"></a>四、导航样式</h2><p>访问各路由时显示对应的激活样式</p>
+<h4 id="1-Active-Styles"><a href="#1-Active-Styles" class="headerlink" title="1. Active Styles"></a>1. Active Styles</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/about"</span> <span class="attr">activeStyle</span>=<span class="string">&#123;&#123;</span> <span class="attr">color:</span> '<span class="attr">red</span>' &#125;&#125;&gt;</span>About<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/repos"</span> <span class="attr">activeStyle</span>=<span class="string">&#123;&#123;</span> <span class="attr">color:</span> '<span class="attr">red</span>' &#125;&#125;&gt;</span>Repos<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="2-Active-Class-Name"><a href="#2-Active-Class-Name" class="headerlink" title="2. Active Class Name"></a>2. Active Class Name</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/about"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span>&gt;</span>About<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/repos"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span>&gt;</span>Repos<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.active</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-封装成NavLink组件"><a href="#3-封装成NavLink组件" class="headerlink" title="3. 封装成NavLink组件"></a>3. 封装成NavLink组件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"><span class="keyword">import</span> &#123; Link &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> React.createClass(&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">Link</span> &#123;<span class="attr">...this.props</span>&#125; <span class="attr">activeClassName</span>=<span class="string">"active"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line"><span class="keyword">import</span> NavLink <span class="keyword">from</span> <span class="string">'./NavLink'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">NavLink</span> <span class="attr">to</span>=<span class="string">"/about"</span>&gt;</span>About<span class="tag">&lt;/<span class="name">NavLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">NavLink</span> <span class="attr">to</span>=<span class="string">"/repos"</span>&gt;</span>Repos<span class="tag">&lt;/<span class="name">NavLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="4-IndexLink"><a href="#4-IndexLink" class="headerlink" title="4. IndexLink"></a>4. IndexLink</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// App.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; IndexLink &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">IndexLink</span> <span class="attr">to</span>=<span class="string">"/"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">IndexLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="5-onlyActiveOnIndex"><a href="#5-onlyActiveOnIndex" class="headerlink" title="5. onlyActiveOnIndex"></a>5. onlyActiveOnIndex</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span> <span class="attr">onlyActiveOnIndex</span>=<span class="string">&#123;true&#125;</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">NavLink</span> <span class="attr">to</span>=<span class="string">"/"</span> <span class="attr">onlyActiveOnIndex</span>=<span class="string">&#123;true&#125;</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">NavLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="五、参数传递"><a href="#五、参数传递" class="headerlink" title="五、参数传递"></a>五、参数传递</h2><p>用户获取及传递url中附带的参数<br>有<code>/repos/:userName/:repoName</code>这样的路由</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/Repo.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> React.createClass(&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;&#123;<span class="keyword">this</span>.props.params.repoName&#125;&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// import Repo</span></span><br><span class="line"><span class="keyword">import</span> Repo <span class="keyword">from</span> <span class="string">'./modules/Repo'</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;&gt;</span><br><span class="line">      &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;/&gt;</span><br><span class="line">      &#123;<span class="comment">/* 添加新路由 */</span>&#125;</span><br><span class="line">      &lt;Route path=<span class="string">"/repos/:userName/:repoName"</span> component=&#123;Repo&#125;/&gt;</span><br><span class="line">      &lt;Route path=<span class="string">"/about"</span> component=&#123;About&#125;/&gt;</span><br><span class="line">    &lt;<span class="regexp">/Route&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>Router&gt;</span><br><span class="line">), <span class="built_in">document</span>.getElementById(<span class="string">'app'</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Repos.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; Link &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> React.createClass(&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;Repos&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        &#123;/</span>* 添加跳转链接 *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">        &lt;ul&gt;</span></span><br><span class="line"><span class="regexp">          &lt;li&gt;&lt;Link to="/</span>repos/reactjs/react-router<span class="string">"&gt;React Router&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">          &lt;li&gt;&lt;Link to="</span>/repos/facebook/react<span class="string">"&gt;React&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">        &lt;/ul&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">    )</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;)</span></span><br></pre></td></tr></table></figure>
+<h2 id="六、设置初始路由"><a href="#六、设置初始路由" class="headerlink" title="六、设置初始路由"></a>六、设置初始路由</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// 从'react-router' 中添加新的引用： `IndexRoute`</span></span><br><span class="line"><span class="keyword">import</span> &#123; Router, Route, hashHistory, IndexRoute &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"><span class="comment">// 添加 Home 组件</span></span><br><span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">'./modules/Home'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;&gt;</span><br><span class="line"></span><br><span class="line">      &#123;<span class="comment">/* 将Home组件作为 `/`的子路由添加 */</span>&#125;</span><br><span class="line">      &lt;IndexRoute component=&#123;Home&#125;/&gt;</span><br><span class="line"></span><br><span class="line">      &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;&gt;</span><br><span class="line">        &lt;Route path=<span class="string">"/repos/:userName/:repoName"</span> component=&#123;Repo&#125;/&gt;</span><br><span class="line">      &lt;<span class="regexp">/Route&gt;</span></span><br><span class="line"><span class="regexp">      &lt;Route path="/</span>about<span class="string">" component=&#123;About&#125;/&gt;</span></span><br><span class="line"><span class="string">    &lt;/Route&gt;</span></span><br><span class="line"><span class="string">  &lt;/Router&gt;</span></span><br><span class="line"><span class="string">), document.getElementById('app'))</span></span><br></pre></td></tr></table></figure>
+<h2 id="七、触发路由"><a href="#七、触发路由" class="headerlink" title="七、触发路由"></a>七、触发路由</h2><p>使用<code>browserHistory</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/Repos.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; browserHistory &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">  handleSubmit(event) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">const</span> path = <span class="string">`/repos/<span class="subst">$&#123;userName&#125;</span>/<span class="subst">$&#123;repo&#125;</span>`</span></span><br><span class="line">    browserHistory.push(path)</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure></p>
+<p>使用<code>Router</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ask for `router` from context</span></span><br><span class="line">  contextTypes: &#123;</span><br><span class="line">    router: React.PropTypes.object</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  handleSubmit(event) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">this</span>.context.router.push(path)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/React/">React</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/React/">React</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2019 xieQin
+    
+  </p>
+</footer>
+    
+  </div>
+</div>
+</body>
+</html>
