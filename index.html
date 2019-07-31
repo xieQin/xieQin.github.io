@@ -452,6 +452,76 @@
 
   
     
+    <h3 class="article-title"><a href="/2017/12/30/由Babel了解编译原理/"><span>由Babel了解编译原理</span></a></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2017/12/30/由Babel了解编译原理/" rel="bookmark">
+        <time class="entry-date published" datetime="2017-12-30T10:59:53.000Z">
+          2017-12-30
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本文首发于 http://CSDN.NET《程序员》杂志 2017 年 12 月刊</span><br></pre></td></tr></table></figure>
+<p>Babel编译流程：词法分析、语法分析、语义分析、中间代码生成、中间代码优化、目标代码生成</p>
+<p>Babel使用的语法解析器是Babylon，抽象语法树的类型定义参考了Mozilla JS 引擎 SpiderMonkey，同时支持对 Flow、JSX、TypeScript 语法的解析<br>Babylon 实现了编译器中两个部分，词法分析和语法分析</p>
+<h3 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h3><p>词法分析的主要任务是扫描输入字符，转换为词法单元（Token）序列，传递给语法分析器进行语法分析。<br>Token 是一个不可分割的最小单元。例如 var 这三个字符，它只能作为一个整体，语义上不能再被分解，因此它是一个 Token，每个 Token 对象都有能够被单独识别的类型属性和其它附加属性（操作符优先级、行列号等）。在 Babylon 词法分析器里，每个关键字是一个 Token ，每个标识符是一个 Token，每个操作符是一个 Token，每个标点符号也都是一个 Token。除此之外，还会过滤掉源程序中的注释和空白字符（换行符、空格、制表符等）。</p>
+<h3 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h3><p>语法分析是词法分析的下一步，主要任务是扫描来自词法分析器产生的 Token 序列，根据文法和结点类型定义构造出一棵 AST，传递给编译器前端余下部分。文法描述了程序设计语言的构造规则，用于指导整个语法分析的过程。它由四个部分组成，一组终结符号（也称 Token）、一组非终结符号、一组产生式和一个开始符号。<br><img src="http://chuantu.xyz/t6/702/1564565524x1033347913.jpg" alt="函数声明语句的产生式表示形式"></p>
+<p>根据文法，语法分析器将 Token 逐个读入，不断替换文法产生式体的非终结符号，直至全部将非终结符号替换为终结符号，这个过程被称为推导。推导又分为两种方式，最左推导和最右推导。如果总是优先替换产生式体最左侧的非终结符号，被称为最左推导，如果总是优先替换产生式体最右侧的非终结符号，被称为最右推导。</p>
+<p>语法分析器按照工作方式来划分，分为自顶向下分析法和自底向上分析法。自顶向下分析法要求通过最左推导从顶部 ( 根结点 ) 开始构造 AST，常用的分析器有递归下降语法分析器、 LL 语法分析器。而自底向上分析法要求通过最右推导从底部 ( 叶子结点 ) 开始构造 AST，常用的分析器有 LR 语法分析器、SLR 语法分析器、LALR 语法分析器。这两种分析方式在 Babylon 中都有所实践。</p>
+<p>首先是自顶向下分析法，例如变量声明语句：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="string">"bar"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>经由词法分析器处理后，会生成 Token 序列：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Token(<span class="string">'var'</span>)</span><br><span class="line">Token(<span class="string">'foo'</span>)</span><br><span class="line">Token(<span class="string">'='</span>)</span><br><span class="line">Token(<span class="string">'"bar"'</span>)</span><br><span class="line">Token(<span class="string">';'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>由 LL(1) 语法分析器进行递归下降分析，每次向前查看一个输入 Token，来决定该用哪种产生式展开。对于变量声明语句的 FIRST 集合（推导结果的首个 Token 集合），只需检查输入 Token 为 Token(‘var’)、Token(‘let’)、Token(‘const’) 三者其中之一，那么就使用该产生式展开。首先构造 AST 最顶层结点 VariableDeclaration，把 Token(‘var’) 的值加入到该结点属性中， 接着逐个读入其余 Token，根据产生式的非终结符号从左到右的顺序，依次构造它的子结点，不断递归下降分析，直至所有 Token 读入完毕。最后生成的一棵 AST 如图所示：<br><img src="http://chuantu.xyz/t6/702/1564565441x1033347913.jpg" alt="生成的AST树"></p>
+<h3 id="生成代码"><a href="#生成代码" class="headerlink" title="生成代码"></a>生成代码</h3><p>工业级别的语言编译器，通常还会有语义分析阶段，检查程序上下文是否和语言所定义的语义一致，比如类型检查，作用域检查，另一个则是生成中间代码，比如三地址代码，用地址和指令来线性描述程序。但由于 Babel 的定位仅仅是对 ES 语法的转换，这一部分工作可以交给 JS 解释器引擎来处理。而 Babel 最为特色的部分是它的插件机制，针对不同的浏览器版本环境，调用不同的 Babel 插件。通过访问者模式（一种设计模式）的接口定义，对 AST 进行一遍深度优先遍历，对指定的匹配到的结点进行修改、删除、新增、移位，使原先的 AST 转换为另一棵经过修改的 AST。</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/编译原理/">编译原理</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Babel/">Babel</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+
+
+  <article>
+
+  
+    
     <h3 class="article-title"><a href="/2017/04/16/用generator实现异步操作/"><span>用generator实现异步操作</span></a></h3>
     
   
@@ -831,97 +901,6 @@
     <span class="post-tags">
       <i class="icon-tags"></i>
         <a href="/tags/React/">React</a>
-    </span>
-    
-
-    </div>
-
-    
-  </div>
-</article>
-
-
-
-  <article>
-
-  
-    
-    <h3 class="article-title"><a href="/2016/03/27/Eslint使用备查/"><span>ESLint使用备查</span></a></h3>
-    
-  
-
-  <div class="article-top-meta">
-    <span class="posted-on">
-      <a href="/2016/03/27/Eslint使用备查/" rel="bookmark">
-        <time class="entry-date published" datetime="2016-03-27T03:48:43.000Z">
-          2016-03-27
-        </time>
-      </a>
-    </span>
-  </div>
-
-
-  
-
-  <div class="article-content">
-    <div class="entry">
-      
-        <p>ESLint是以可扩展、每条规则独立、不内置编码风格为理念的lint工具</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g eslint</span><br></pre></td></tr></table></figure>
-<h3 id="2-使用"><a href="#2-使用" class="headerlink" title="2. 使用"></a>2. 使用</h3><p>在项目目录下输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --init</span><br></pre></td></tr></table></figure>
-<p>之后便可以对项目下的任何js文件使用ESLnt，如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint test.js test2.js</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-使用要点"><a href="#3-使用要点" class="headerlink" title="3. 使用要点"></a>3. 使用要点</h3><h4 id="3-1-配置"><a href="#3-1-配置" class="headerlink" title="3.1 配置"></a>3.1 配置</h4><p>可使用三种方式配置ESLint：</p>
-<ul>
-<li>使用 <code>.eslintrc</code> 文件（可通过<code>eslint --init</code>生成）</li>
-<li>在 <code>package.json</code> 文件内添加 <code>eslintConfig</code> 配置块</li>
-<li>在代码文件中定义</li>
-</ul>
-<h6 id="3-1-1-eslintrc-示例"><a href="#3-1-1-eslintrc-示例" class="headerlink" title="3.1.1 .eslintrc 示例"></a>3.1.1 <code>.eslintrc</code> 示例</h6><p>项目根目录的 <code>.eslintrc</code> 文件会应用到整个项目，子目录中如果也包含 <code>.eslintrc</code> 文件则会忽略根目录中的配置</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"env"</span>: &#123;</span><br><span class="line">    <span class="attr">"browser"</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"globals"</span>: &#123;</span><br><span class="line">    <span class="attr">"angular"</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"rules"</span>: &#123;</span><br><span class="line">    <span class="attr">"camelcase"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"curly"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"brace-style"</span>: [<span class="number">2</span>, <span class="string">"1tbs"</span>],</span><br><span class="line">    <span class="attr">"quotes"</span>: [<span class="number">2</span>, <span class="string">"single"</span>],</span><br><span class="line">    <span class="attr">"semi"</span>: [<span class="number">2</span>, <span class="string">"always"</span>],</span><br><span class="line">    <span class="attr">"space-in-brackets"</span>: [<span class="number">2</span>, <span class="string">"never"</span>],</span><br><span class="line">    <span class="attr">"space-infix-ops"</span>: <span class="number">2</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="3-1-2-package-json-示例"><a href="#3-1-2-package-json-示例" class="headerlink" title="3.1.2 package.json 示例"></a>3.1.2 <code>package.json</code> 示例</h6><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"mypackage"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"0.0.1"</span>,</span><br><span class="line">  <span class="attr">"eslintConfig"</span>: &#123;</span><br><span class="line">    <span class="attr">"env"</span>: &#123;</span><br><span class="line">      <span class="attr">"browser"</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">"node"</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="3-1-3-文件内配置"><a href="#3-1-3-文件内配置" class="headerlink" title="3.1.3 文件内配置"></a>3.1.3 文件内配置</h6><p>代码文件内的配置会覆盖配置文件中的规则</p>
-<ul>
-<li><p>禁用ESLint:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* eslint-disable */</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">key</span>: <span class="string">'value'</span>, &#125;;</span><br><span class="line"><span class="comment">/* eslint-enable */</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>禁用一条规则</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*eslint-disable no-alert */</span></span><br><span class="line">alert(<span class="string">'doing awful things'</span>);</span><br><span class="line"><span class="comment">/* eslint-enable no-alert */</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="3-2-工作流集成"><a href="#3-2-工作流集成" class="headerlink" title="3.2 工作流集成"></a>3.2 工作流集成</h4><ul>
-<li><p>在Gulp中使用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> eslint = <span class="built_in">require</span>(<span class="string">'gulp-eslint'</span>);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'lint'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'client/app/**/*.js'</span>)</span><br><span class="line">    .pipe(eslint())</span><br><span class="line">    .pipe(eslint.format());</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在Webpack中使用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  devtool: <span class="string">'cheap-module-eval-source-map'</span>,</span><br><span class="line">  entry: [</span><br><span class="line">    <span class="string">'webpack-hot-middleware/client?noInfo=true&amp;reload=true'</span>,</span><br><span class="line">    <span class="string">'./index'</span></span><br><span class="line">  ],</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.join(__dirname, <span class="string">'dist'</span>),</span><br><span class="line">    filename: <span class="string">'bundle.js'</span>,</span><br><span class="line">    publicPath: <span class="string">'/static/'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> webpack.optimize.OccurenceOrderPlugin(),</span><br><span class="line">    <span class="keyword">new</span> webpack.HotModuleReplacementPlugin()</span><br><span class="line">  ],</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    loaders: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        loaders: [<span class="string">'babel'</span>, <span class="string">'eslint'</span>],</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">        include: __dirname</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="4-配置规则"><a href="#4-配置规则" class="headerlink" title="4. 配置规则"></a>4. 配置规则</h3><p><a href="http://eslint.org/docs/user-guide/configuring" target="_blank" rel="noopener">Configuring ESLint</a></p>
-
-      
-    </div>
-
-  </div>
-
-  <div class="article-footer">
-    <div class="article-meta pull-left">
-
-    
-      
-
-    <span class="post-categories">
-      <i class="icon-categories"></i>
-        <a href="/categories/前端/">前端</a>
-    </span>
-    
-
-    
-    
-
-    <span class="post-tags">
-      <i class="icon-tags"></i>
-        <a href="/tags/Eslint/">Eslint</a>
     </span>
     
 
