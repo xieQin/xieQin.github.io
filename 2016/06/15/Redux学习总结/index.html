@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Redux学习总结 | Cherish</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="从Redux的流程图来看，redux的整体思想还是不难理解的只是当遇到各种为了同构而设计得较为繁琐的API、为了相对高效率地获得状态树的局部状态而引入的第三方库时，难免有些地方迷糊因此总结一下学习中的要点，备查 推荐教程文档 1. ReduxRedux主要特点：  state以单一对象存储在store对象中 state只读，state变化时应返回新的state而不是更新原state 使用纯函数r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redux学习总结">
+<meta property="og:url" content="http://www.cherishhsieh.com/2016/06/15/Redux%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Cherish">
+<meta property="og:description" content="从Redux的流程图来看，redux的整体思想还是不难理解的只是当遇到各种为了同构而设计得较为繁琐的API、为了相对高效率地获得状态树的局部状态而引入的第三方库时，难免有些地方迷糊因此总结一下学习中的要点，备查 推荐教程文档 1. ReduxRedux主要特点：  state以单一对象存储在store对象中 state只读，state变化时应返回新的state而不是更新原state 使用纯函数r">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://camo.githubusercontent.com/76224d874f32535aa62c0cd01750fb71fb02cf53/687474703a2f2f70362e7168696d672e636f6d2f642f696e6e2f39613331326463632f7265647578466c6f772e706e67">
+<meta property="article:published_time" content="2016-06-15T07:01:17.000Z">
+<meta property="article:modified_time" content="2022-09-08T13:31:13.305Z">
+<meta property="article:author" content="xieQin">
+<meta property="article:tag" content="Redux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://camo.githubusercontent.com/76224d874f32535aa62c0cd01750fb71fb02cf53/687474703a2f2f70362e7168696d672e636f6d2f642f696e6e2f39613331326463632f7265647578466c6f772e706e67">
+  
+    <link rel="alternate" href="/atom.xml" title="Cherish" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cherish</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个真实的现在可以开垦一万个美丽的未来</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.cherishhsieh.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Redux学习总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/06/15/Redux%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2016-06-15T07:01:17.000Z" itemprop="datePublished">2016-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Redux学习总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://camo.githubusercontent.com/76224d874f32535aa62c0cd01750fb71fb02cf53/687474703a2f2f70362e7168696d672e636f6d2f642f696e6e2f39613331326463632f7265647578466c6f772e706e67" alt="Redux流程图"></p>
+<p>从Redux的流程图来看，redux的整体思想还是不难理解的<br>只是当遇到各种为了同构而设计得较为繁琐的API、为了相对高效率地获得状态树的局部状态而引入的第三方库时，<br>难免有些地方迷糊<br>因此总结一下学习中的要点，备查</p>
+<p><a href="https://github.com/happypoulp/redux-tutorial" target="_blank" rel="noopener">推荐教程</a><br><a href="http://redux.js.org/" target="_blank" rel="noopener">文档</a></p>
+<h1 id="1-Redux"><a href="#1-Redux" class="headerlink" title="1. Redux"></a>1. Redux</h1><p>Redux主要特点：</p>
+<ul>
+<li>state以单一对象存储在store对象中</li>
+<li>state只读，state变化时应返回新的state而不是更新原state</li>
+<li>使用纯函数reducer执行state更新</li>
+</ul>
+<blockquote>
+<p>state 为单一对象，使得 Redux 只需要维护一棵状态树，服务端很容易初始化状态，易于服务器渲染。state 只能通过 dispatch(action) 来触发更新，更新逻辑由 reducer 来执行</p>
+</blockquote>
+<h2 id="1-1-Action"><a href="#1-1-Action" class="headerlink" title="1.1 Action"></a>1.1 Action</h2><p>action 可以理解为应用向 store 传递的数据信息（一般为用户交互信息）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: ADD_TODO,</span><br><span class="line">    text,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">store.dispatch(addTodo(text))</span><br></pre></td></tr></table></figure>
+<p>如果要处理异步 action，需要使用一些中间件。<br>redux-thunks 和 redux-promise 分别是使用异步回调和 Promise 来解决异步 action 的问题</p>
+<h2 id="1-2-Reducer"><a href="#1-2-Reducer" class="headerlink" title="1.2 Reducer"></a>1.2 Reducer</h2><p>更新state的纯函数，用来执行根据指定 action 来更新 state 的逻辑<br><code>(previousState, action) =&gt; newState</code><br><code>combineReducers(reducers)</code> 可以把多个 reducer 合并成一个 root reducer</p>
+<h2 id="1-3-Store"><a href="#1-3-Store" class="headerlink" title="1.3 Store"></a>1.3 Store</h2><p>store 是一个单一对象：</p>
+<ul>
+<li>管理应用的 state</li>
+<li>获取 state <code>store.getState()</code></li>
+<li>触发 state 更新 <code>store.dispatch(action)</code></li>
+<li>注册 state 变化监听器 <code>store.subscribe(listener)</code></li>
+<li>创建store <code>createStore(reducer, [initialState])</code></li>
+</ul>
+<h1 id="2-Middlewares"><a href="#2-Middlewares" class="headerlink" title="2. Middlewares"></a>2. Middlewares</h1><p>dispatch(action) 是一个同步的过程：执行 reducer 更新 state -&gt; 调用 store 的监听处理函数。<br>如果需要在 dispatch 时执行一些异步操作（fetch action data），此时就需要引入 Middleware 解决。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">thunkMiddleware</span>(<span class="params">&#123; dispatch, getState &#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">next</span> =&gt;</span> <span class="function"><span class="params">action</span> =&gt;</span></span><br><span class="line">    <span class="keyword">typeof</span> action === <span class="string">'function'</span> ? action(dispatch, getState) : next(action)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>newDispatch = middleware1(middleware2(...(dispatch)...))</code></p>
+<h1 id="3-react-redux"><a href="#3-react-redux" class="headerlink" title="3. react-redux"></a>3. react-redux</h1><p><a href="http://cn.redux.js.org/docs/react-redux/index.html" target="_blank" rel="noopener">react-redux 文档</a></p>
+<p>API:</p>
+<ul>
+<li><code>&lt;Provider store&gt;</code></li>
+<li><code>connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])</code></li>
+</ul>
+<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><ul>
+<li>action是纯声明式的数据结构，提供事件的所有要素</li>
+<li>reducer是一个匹配函数, 所有的reducer都可以捕捉到action并匹配与自己相关与否，相关就拿走action中的要素进行逻辑处理，修改store中的状态，不相关就不对state做处理原样返回</li>
+<li>store负责存储状态并可以被react api回调，发布action</li>
+<li>react-redux, 提供一个Provider和connect</li>
+<li>Provider是一个普通组件，可以作为顶层app的分发点，传入store属性后，它会将state分发给所有被connect的组件</li>
+<li>connect是一个科里化函数，先接收两个参数（数据绑定mapStateToProps和事件绑定mapDispatchToProps），再接受一个参数（将要绑定的组件本身）</li>
+<li>mapStateToProps：构建好Redux系统的时候，它会被自动初始化，但是你的React组件并不知道它的存在，因此你需要分拣出你需要的Redux状态，所以你需要绑定一个函数，它的参数是state，简单返回你关心的几个值。</li>
+<li>mapDispatchToProps：声明好的action作为回调，也可以被注入到组件里，就是通过这个函数，它的参数是dispatch，通过redux的辅助方法bindActionCreator绑定所有action以及参数的dispatch，就可以作为属性在组件里面作为函数简单使用了，不需要手动dispatch。这个mapDispatchToProps是可选的，如果不传这个参数redux会简单把dispatch作为属性注入给组件，可以手动当做store.dispatch使用。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2016/06/15/Redux%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" data-id="cl7t4sb0e000xou004c0prf97" data-title="Redux学习总结" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/20/Generator%E5%87%BD%E6%95%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Generator函数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/11/React-Native%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">React-Native学习总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Javascript/">Javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Markdown/">Markdown</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8F%92%E4%BB%B6/">插件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Babel/" rel="tag">Babel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cypress/" rel="tag">Cypress</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eslint/" rel="tag">Eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jquery/" rel="tag">Jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/" rel="tag">React-Native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E8%83%BD/" rel="tag">前端技能</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Babel/" style="font-size: 10px;">Babel</a> <a href="/tags/CSS/" style="font-size: 13.33px;">CSS</a> <a href="/tags/Cypress/" style="font-size: 13.33px;">Cypress</a> <a href="/tags/Eslint/" style="font-size: 10px;">Eslint</a> <a href="/tags/Javascript/" style="font-size: 20px;">Javascript</a> <a href="/tags/Jquery/" style="font-size: 16.67px;">Jquery</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/React/" style="font-size: 16.67px;">React</a> <a href="/tags/React-Native/" style="font-size: 10px;">React-Native</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 13.33px;">Vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E8%83%BD/" style="font-size: 10px;">前端技能</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/12/%E4%BD%BF%E7%94%A8Cypress%E8%BF%9B%E8%A1%8C%E5%89%8D%E7%AB%AFe2e%E6%B5%8B%E8%AF%95/">使用Cypress进行前端e2e测试</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/28/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A5%E5%85%A5%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87/">前端项目接入代码测试覆盖率</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/24/%E4%BD%BF%E7%94%A8React%20Hooks%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">使用React Hooks进行状态管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/23/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8A%80%E8%83%BDchecklist/">前端工程师技能checklist</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/30/%E7%94%B1Babel%E4%BA%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">由Babel了解编译原理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 xieQin<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Cherish</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="cherish blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cherish">
+<meta property="og:url" content="http://www.cherishhsieh.com/index.html">
+<meta property="og:site_name" content="Cherish">
+<meta property="og:description" content="cherish blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="xieQin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Cherish" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cherish</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个真实的现在可以开垦一万个美丽的未来</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.cherishhsieh.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-使用Cypress进行前端e2e测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/12/%E4%BD%BF%E7%94%A8Cypress%E8%BF%9B%E8%A1%8C%E5%89%8D%E7%AB%AFe2e%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time class="dt-published" datetime="2019-07-12T04:59:18.000Z" itemprop="datePublished">2019-07-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Test/">Test</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/12/%E4%BD%BF%E7%94%A8Cypress%E8%BF%9B%E8%A1%8C%E5%89%8D%E7%AB%AFe2e%E6%B5%8B%E8%AF%95/">使用Cypress进行前端e2e测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://docs.cypress.io/" target="_blank" rel="noopener">Cypress文档</a></p>
+<h1 id="e2e测试示例"><a href="#e2e测试示例" class="headerlink" title="e2e测试示例"></a>e2e测试示例</h1><p><a href="https://github.com/xieQin/code-coverage" target="_blank" rel="noopener">code-coverage</a></p>
+<h1 id="Cypress概览"><a href="#Cypress概览" class="headerlink" title="Cypress概览"></a>Cypress概览</h1><p><img src="http://chuantu.xyz/t6/702/1564540539x2728309587.jpg" alt="总体流程"></p>
+<h1 id="编写测试用例总体流程"><a href="#编写测试用例总体流程" class="headerlink" title="编写测试用例总体流程"></a>编写测试用例总体流程</h1><ul>
+<li>确定测试流程</li>
+<li>明确流程中涉及到的元素及数据接口</li>
+<li>使用data-cy标记元素</li>
+<li>使用cy.get(), cy.route()进行数据接口mock</li>
+<li>按功能需求编写用例</li>
+<li>运行调试</li>
+</ul>
+<h1 id="Cypress使用总结"><a href="#Cypress使用总结" class="headerlink" title="Cypress使用总结"></a>Cypress使用总结</h1><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>引入简单，开箱即用</p>
+<p>官方示例多，利于开发与维护</p>
+<p>gui 界面（ env：chrome 浏览器），可边测试边调整</p>
+<p>截图功能，用例失败的场景节点会被截图保存，利于复现</p>
+<p>自定义 fixture，可 mock 数据</p>
+<p>自定义 commands，提高测试代码复用</p>
+<p>支持单元测试</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>不支持兼容测试，只能运行在chrome环境中</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2019/07/12/%E4%BD%BF%E7%94%A8Cypress%E8%BF%9B%E8%A1%8C%E5%89%8D%E7%AB%AFe2e%E6%B5%8B%E8%AF%95/" data-id="cl7t4sb0r001sou002y3bwwr7" data-title="使用Cypress进行前端e2e测试" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cypress/" rel="tag">Cypress</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-前端项目接入代码测试覆盖率" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/28/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A5%E5%85%A5%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87/" class="article-date">
+  <time class="dt-published" datetime="2019-06-28T10:38:20.000Z" itemprop="datePublished">2019-06-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Test/">Test</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/28/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A5%E5%85%A5%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87/">前端项目接入代码测试覆盖率</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://docs.cypress.io/" target="_blank" rel="noopener">Cypress文档</a></p>
+<h1 id="e2e测试覆盖率demo"><a href="#e2e测试覆盖率demo" class="headerlink" title="e2e测试覆盖率demo"></a>e2e测试覆盖率demo</h1><p><a href="https://github.com/xieQin/code-coverage" target="_blank" rel="noopener">code-coverage</a></p>
+<h1 id="接入流程"><a href="#接入流程" class="headerlink" title="接入流程"></a>接入流程</h1><p>测试框架：Cypress</p>
+<p>框架文档地址：(<a href="https://www.cypress.io/" target="_blank" rel="noopener">https://www.cypress.io/</a>)</p>
+<p>引入Cypress<br>新项目：使用vue-cli3 创建项目，创建时勾选e2e测试，测试框架选择Cypress<br>已有项目：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install cypress --save-dev</span><br></pre></td></tr></table></figure></p>
+<p>添加测试覆盖率：<br>安装npm模块：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@cypress/code-coverage</span><br><span class="line">istanbul-instrumenter-loader</span><br><span class="line">istanbul-lib-coverage</span><br><span class="line">nyc</span><br><span class="line">babel-plugin-istanbul</span><br></pre></td></tr></table></figure></p>
+<p>增加.nycrc 文件，文件内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;extension&quot;: [&quot;.js&quot;, &quot;.vue&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>增加cypress.json, 文件内容如下：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"pluginsFile"</span>: <span class="string">"tests/e2e/plugins/index.js"</span>,</span><br><span class="line">  <span class="attr">"fixturesFolder"</span>: <span class="string">"tests/e2e/fixtures"</span>,</span><br><span class="line">  <span class="attr">"integrationFolder"</span>: <span class="string">"tests/e2e/integration"</span>,</span><br><span class="line">  <span class="attr">"screenshotsFolder"</span>: <span class="string">"tests/e2e/screenshots"</span>,</span><br><span class="line">  <span class="attr">"videosFolder"</span>: <span class="string">"tests/e2e/videos"</span>,</span><br><span class="line">  <span class="attr">"supportFile"</span>: <span class="string">"tests/e2e/support/index.js"</span>,</span><br><span class="line">  <span class="attr">"baseUrl"</span>: <span class="string">"http://localhost:8081"</span>,</span><br><span class="line">  <span class="attr">"viewportHeight"</span>: <span class="number">666</span>,</span><br><span class="line">  <span class="attr">"viewportWidth"</span>: <span class="number">375</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>tests/e2e/plugins/index.js 添加<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on(<span class="string">'task'</span>, <span class="built_in">require</span>(<span class="string">'@cypress/code-coverage/task'</span>))</span><br></pre></td></tr></table></figure></p>
+<p>tests/e2e/support/index.js 添加<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'@cypress/code-coverage/support'</span></span><br></pre></td></tr></table></figure></p>
+<p>Cypress文件目录<br>tests/e2e/fixtures/：测试辅助文件目录<br>tests/e2e/integration/ : 测试用例文件目录<br>tests/e2e/plugins/：插件目录<br>tests/e2e/support/：<br>  tests/e2e/support/command.js<br>  tests/e2e/support/index.js<br>cypress.json: cypress配置</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2019/06/28/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A5%E5%85%A5%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87/" data-id="cl7t4sb11002cou00vkvx6ksm" data-title="前端项目接入代码测试覆盖率" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cypress/" rel="tag">Cypress</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-使用React Hooks进行状态管理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/24/%E4%BD%BF%E7%94%A8React%20Hooks%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2019-03-24T07:59:42.000Z" itemprop="datePublished">2019-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/24/%E4%BD%BF%E7%94%A8React%20Hooks%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">使用React Hooks进行状态管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="总体方案"><a href="#总体方案" class="headerlink" title="总体方案"></a>总体方案</h2><p>定义Model<br><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> stateType = &#123;</span><br><span class="line">  text: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> actionsType = &#123;</span><br><span class="line">  modify: <span class="built_in">any</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> TestModel: ModelType&lt;stateType, actionsType&gt; = &#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    text: <span class="string">'hello world'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    modify (state, actions, text: <span class="built_in">string</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="params">state</span> =&gt;</span> &#123;</span><br><span class="line">        state.text = text</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> TestModel</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Model &#125; <span class="keyword">from</span> <span class="string">"react-model"</span>;</span><br><span class="line"><span class="keyword">import</span> Test <span class="keyword">from</span> <span class="string">"./test"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> &#123; useStore, getState &#125; = Model(&#123; Test &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h3><ul>
+<li><p>依赖：react-model</p>
+</li>
+<li><p>使用示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useStore &#125; from &apos;../models&apos;</span><br><span class="line"></span><br><span class="line">const Example = () =&gt; &#123;</span><br><span class="line">  const [state, actions] = useStore(&apos;Test&apos;)</span><br><span class="line">  return (</span><br><span class="line">    &lt;div onClick=&#123;() =&gt; actions.modify(&apos;hello&apos;)&#125;&gt;&#123;state.text&#125;&lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>项目示例<br><a href="https://github.com/xieQin/react-state-hooks" target="_blank" rel="noopener">react-state-hooks</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2019/03/24/%E4%BD%BF%E7%94%A8React%20Hooks%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" data-id="cl7t4sb0x0024ou00bzz6uycd" data-title="使用React Hooks进行状态管理" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-前端工程师技能checklist" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/10/23/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8A%80%E8%83%BDchecklist/" class="article-date">
+  <time class="dt-published" datetime="2018-10-23T08:59:18.000Z" itemprop="datePublished">2018-10-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/10/23/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8A%80%E8%83%BDchecklist/">前端工程师技能checklist</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一、JavaScript"><a href="#一、JavaScript" class="headerlink" title="一、JavaScript"></a>一、JavaScript</h2><ul>
+<li>[ ] 变量与类型</li>
+<li>[ ] 原型和原型链</li>
+<li>[ ] 作用域和闭包</li>
+<li>[ ] 异步与性能</li>
+<li>[ ] ES6</li>
+</ul>
+<h2 id="二、前端框架"><a href="#二、前端框架" class="headerlink" title="二、前端框架"></a>二、前端框架</h2><ul>
+<li>[ ] Vue.js</li>
+<li>[ ] React</li>
+<li>[ ] Mobx</li>
+<li>[ ] Redux</li>
+<li>[ ] Rx.js</li>
+</ul>
+<h2 id="三、Css"><a href="#三、Css" class="headerlink" title="三、Css"></a>三、Css</h2><ul>
+<li>[ ] 盒模型</li>
+<li>[ ] BFC</li>
+<li>[ ] Css预处理器</li>
+<li>[ ] Css module</li>
+<li>[ ] Css 动画</li>
+<li>[ ] 响应式</li>
+</ul>
+<h2 id="四、Node-js"><a href="#四、Node-js" class="headerlink" title="四、Node.js"></a>四、Node.js</h2><ul>
+<li>[ ] 全局变量</li>
+<li>[ ] 文件系统</li>
+<li>[ ] 网络</li>
+<li>[ ] Events</li>
+<li>[ ] Buffer</li>
+<li>[ ] Stream</li>
+<li>[ ] 子进程与多进程</li>
+<li>[ ] 异常处理</li>
+<li>[ ] 上线运维</li>
+<li>[ ] 性能优化实践</li>
+<li>[ ] Express与Koa</li>
+</ul>
+<h2 id="五、TypeScript"><a href="#五、TypeScript" class="headerlink" title="五、TypeScript"></a>五、TypeScript</h2><ul>
+<li>[ ] interface</li>
+<li>[ ] 泛型</li>
+<li>[ ] 语法</li>
+</ul>
+<h2 id="六、前端工程"><a href="#六、前端工程" class="headerlink" title="六、前端工程"></a>六、前端工程</h2><ul>
+<li>[ ] 搭建监控系统</li>
+<li>[ ] 前端性能优化</li>
+<li>[ ] 前端安全</li>
+<li>[ ] 自定义项目脚手架</li>
+<li>[ ] 大型项目的前端构建</li>
+<li>[ ] 前端持续集成与版本控制</li>
+<li>[ ] Nginx</li>
+<li>[ ] Docker</li>
+</ul>
+<h2 id="七、测试"><a href="#七、测试" class="headerlink" title="七、测试"></a>七、测试</h2><ul>
+<li>[ ] 单元测试</li>
+<li>[ ] e2e测试</li>
+</ul>
+<h2 id="八、算法与数据结构"><a href="#八、算法与数据结构" class="headerlink" title="八、算法与数据结构"></a>八、算法与数据结构</h2><h4 id="8-1-排序"><a href="#8-1-排序" class="headerlink" title="8.1 排序"></a>8.1 排序</h4><ul>
+<li>[ ] 插入排序</li>
+<li>[ ] 归并排序</li>
+<li>[ ] 冒泡排序</li>
+<li>[ ] 选择排序</li>
+<li>[ ] 快速排序</li>
+</ul>
+<h4 id="8-2-分治"><a href="#8-2-分治" class="headerlink" title="8.2 分治"></a>8.2 分治</h4><ul>
+<li>[ ] 最大子数组</li>
+<li>[ ] n * n 矩阵乘法 Strassen算法</li>
+</ul>
+<h4 id="8-3-数据结构"><a href="#8-3-数据结构" class="headerlink" title="8.3 数据结构"></a>8.3 数据结构</h4><ul>
+<li>[ ] 栈</li>
+<li>[ ] 队列</li>
+<li>[ ] 优先队列</li>
+<li>[ ] 链表</li>
+<li>[ ] 散列表</li>
+<li>[ ] 二叉搜索树<ul>
+<li>[ ] 插入</li>
+<li>[ ] 查找</li>
+<li>[ ] 更新</li>
+<li>[ ] 删除</li>
+<li>[ ] 遍历<ul>
+<li>[ ] 前序遍历</li>
+<li>[ ] 中序遍历</li>
+<li>[ ] 后序遍历</li>
+<li>[ ] 层级遍历</li>
+<li>[ ] 深度优先遍历</li>
+<li>[ ] 广度优先遍历</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>[ ] 图</li>
+</ul>
+<h4 id="8-4-贪心"><a href="#8-4-贪心" class="headerlink" title="8.4 贪心"></a>8.4 贪心</h4><h4 id="8-5-最短路径"><a href="#8-5-最短路径" class="headerlink" title="8.5 最短路径"></a>8.5 最短路径</h4><h4 id="8-6-算法习题"><a href="#8-6-算法习题" class="headerlink" title="8.6 算法习题"></a>8.6 算法习题</h4><ul>
+<li>[ ] 剑指offer习题</li>
+<li>[ ] leetcode习题</li>
+</ul>
+<h2 id="九、编译原理"><a href="#九、编译原理" class="headerlink" title="九、编译原理"></a>九、编译原理</h2><ul>
+<li>[ ] AST</li>
+<li>[ ] Babel</li>
+</ul>
+<h2 id="十、设计模式"><a href="#十、设计模式" class="headerlink" title="十、设计模式"></a>十、设计模式</h2><ul>
+<li>[ ] 单例模式</li>
+<li>[ ] 工厂模式</li>
+<li>[ ] 发布/订阅</li>
+<li>[ ] 观察者模式</li>
+<li>[ ] 装饰器模式</li>
+</ul>
+<h2 id="十一、网络"><a href="#十一、网络" class="headerlink" title="十一、网络"></a>十一、网络</h2><ul>
+<li>[ ] Http协议，Http 1.0，Http 2.0</li>
+<li>[ ] DNS</li>
+<li>[ ] CDN原理</li>
+<li>[ ] WebSocket</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2018/10/23/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8A%80%E8%83%BDchecklist/" data-id="cl7t4sb0u001vou00l3045yjh" data-title="前端工程师技能checklist" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E8%83%BD/" rel="tag">前端技能</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-由Babel了解编译原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/12/30/%E7%94%B1Babel%E4%BA%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2017-12-30T10:59:53.000Z" itemprop="datePublished">2017-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/12/30/%E7%94%B1Babel%E4%BA%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">由Babel了解编译原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Babel编译流程：词法分析、语法分析、语义分析、中间代码生成、中间代码优化、目标代码生成</p>
+<p>Babel使用的语法解析器是Babylon，抽象语法树的类型定义参考了Mozilla JS 引擎 SpiderMonkey，同时支持对 Flow、JSX、TypeScript 语法的解析<br>Babylon 实现了编译器中两个部分，词法分析和语法分析</p>
+<h3 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h3><p>词法分析的主要任务是扫描输入字符，转换为词法单元（Token）序列，传递给语法分析器进行语法分析。<br>Token 是一个不可分割的最小单元。例如 var 这三个字符，它只能作为一个整体，语义上不能再被分解，因此它是一个 Token，每个 Token 对象都有能够被单独识别的类型属性和其它附加属性（操作符优先级、行列号等）。在 Babylon 词法分析器里，每个关键字是一个 Token ，每个标识符是一个 Token，每个操作符是一个 Token，每个标点符号也都是一个 Token。除此之外，还会过滤掉源程序中的注释和空白字符（换行符、空格、制表符等）。</p>
+<h3 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h3><p>语法分析是词法分析的下一步，主要任务是扫描来自词法分析器产生的 Token 序列，根据文法和结点类型定义构造出一棵 AST，传递给编译器前端余下部分。文法描述了程序设计语言的构造规则，用于指导整个语法分析的过程。它由四个部分组成，一组终结符号（也称 Token）、一组非终结符号、一组产生式和一个开始符号。<br><img src="http://chuantu.xyz/t6/702/1564565524x1033347913.jpg" alt="函数声明语句的产生式表示形式"></p>
+<p>根据文法，语法分析器将 Token 逐个读入，不断替换文法产生式体的非终结符号，直至全部将非终结符号替换为终结符号，这个过程被称为推导。推导又分为两种方式，最左推导和最右推导。如果总是优先替换产生式体最左侧的非终结符号，被称为最左推导，如果总是优先替换产生式体最右侧的非终结符号，被称为最右推导。</p>
+<p>语法分析器按照工作方式来划分，分为自顶向下分析法和自底向上分析法。自顶向下分析法要求通过最左推导从顶部 ( 根结点 ) 开始构造 AST，常用的分析器有递归下降语法分析器、 LL 语法分析器。而自底向上分析法要求通过最右推导从底部 ( 叶子结点 ) 开始构造 AST，常用的分析器有 LR 语法分析器、SLR 语法分析器、LALR 语法分析器。这两种分析方式在 Babylon 中都有所实践。</p>
+<p>首先是自顶向下分析法，例如变量声明语句：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="string">&quot;bar&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>经由词法分析器处理后，会生成 Token 序列：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Token</span>(<span class="string">&#x27;var&#x27;</span>)</span><br><span class="line"><span class="title class_">Token</span>(<span class="string">&#x27;foo&#x27;</span>)</span><br><span class="line"><span class="title class_">Token</span>(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line"><span class="title class_">Token</span>(<span class="string">&#x27;&quot;bar&quot;&#x27;</span>)</span><br><span class="line"><span class="title class_">Token</span>(<span class="string">&#x27;;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>由 LL(1) 语法分析器进行递归下降分析，每次向前查看一个输入 Token，来决定该用哪种产生式展开。对于变量声明语句的 FIRST 集合（推导结果的首个 Token 集合），只需检查输入 Token 为 Token(‘var’)、Token(‘let’)、Token(‘const’) 三者其中之一，那么就使用该产生式展开。首先构造 AST 最顶层结点 VariableDeclaration，把 Token(‘var’) 的值加入到该结点属性中， 接着逐个读入其余 Token，根据产生式的非终结符号从左到右的顺序，依次构造它的子结点，不断递归下降分析，直至所有 Token 读入完毕。最后生成的一棵 AST 如图所示：<br><img src="http://chuantu.xyz/t6/702/1564565441x1033347913.jpg" alt="生成的AST树"></p>
+<h3 id="生成代码"><a href="#生成代码" class="headerlink" title="生成代码"></a>生成代码</h3><p>工业级别的语言编译器，通常还会有语义分析阶段，检查程序上下文是否和语言所定义的语义一致，比如类型检查，作用域检查，另一个则是生成中间代码，比如三地址代码，用地址和指令来线性描述程序。但由于 Babel 的定位仅仅是对 ES 语法的转换，这一部分工作可以交给 JS 解释器引擎来处理。而 Babel 最为特色的部分是它的插件机制，针对不同的浏览器版本环境，调用不同的 Babel 插件。通过访问者模式（一种设计模式）的接口定义，对 AST 进行一遍深度优先遍历，对指定的匹配到的结点进行修改、删除、新增、移位，使原先的 AST 转换为另一棵经过修改的 AST。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2017/12/30/%E7%94%B1Babel%E4%BA%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" data-id="cl7t4sb17002oou00d2sni8t5" data-title="由Babel了解编译原理" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Babel/" rel="tag">Babel</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-用generator实现异步操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/04/16/%E7%94%A8generator%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2017-04-16T10:28:23.000Z" itemprop="datePublished">2017-04-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/04/16/%E7%94%A8generator%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/">用generator实现异步操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>实现一个co函数，接收一个generator，实现自动执行</p>
+<p>示例代码<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">generator</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'generator start'</span>)</span><br><span class="line">  <span class="keyword">yield</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    resolve(<span class="number">1</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'generator 1'</span>)</span><br><span class="line">  <span class="keyword">yield</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'generator 2'</span>)</span><br><span class="line">    resolve(<span class="number">2</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">co</span>(<span class="params">gen</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> iterator = gen();</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">autoRun</span>(<span class="params">iteration</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (iteration.done) &#123;</span><br><span class="line">      <span class="keyword">return</span> iteration.value;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> anotherPromise = iteration.value;</span><br><span class="line">    anotherPromise.then(<span class="function"><span class="params">x</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> autoRun(iterator.next(x));</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> autoRun(iterator.next());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">co(generator)</span><br><span class="line"><span class="comment">// generator start</span></span><br><span class="line"><span class="comment">// generator 1</span></span><br><span class="line"><span class="comment">// generator 2</span></span><br></pre></td></tr></table></figure></p>
+<p>co函数的流程如下:</p>
+<ul>
+<li>co传入一个genetor并运行，获得一个iterator(generator())</li>
+<li>调用next()方法，获取到iteration,iteration的value是异步流程的结果，也即一个Promise。</li>
+<li>yield返回出的任务，由外部执行和处理，结束后在返回,于是使用then方法。</li>
+<li>处理后的结果为x，调用iterator.next(x)把x返回的同时，拿到了下一个yield的抛出的任务。</li>
+<li>处理任务，得到result，并通过next(result)返回给genetor。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2017/04/16/%E7%94%A8generator%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" data-id="cl7t4sb13002kou00xy3bzsbf" data-title="用generator实现异步操作" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="es6-Generator函数" class="h-entry article article-type-es6" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/07/20/Generator%E5%87%BD%E6%95%B0/" class="article-date">
+  <time class="dt-published" datetime="2016-07-20T10:13:26.000Z" itemprop="datePublished">2016-07-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/07/20/Generator%E5%87%BD%E6%95%B0/">Generator函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><p>生成器函数返回一个生成器对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> g = gen();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(g.next().value); <span class="comment">//1</span></span><br><span class="line"><span class="built_in">console</span>.log(g.next().value); <span class="comment">//2</span></span><br><span class="line"><span class="built_in">console</span>.log(g.next().value); <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2016/07/20/Generator%E5%87%BD%E6%95%B0/" data-id="cl7t4sb03000bou0015yxblpz" data-title="Generator函数" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Redux学习总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/06/15/Redux%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2016-06-15T07:01:17.000Z" itemprop="datePublished">2016-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/06/15/Redux%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">Redux学习总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://camo.githubusercontent.com/76224d874f32535aa62c0cd01750fb71fb02cf53/687474703a2f2f70362e7168696d672e636f6d2f642f696e6e2f39613331326463632f7265647578466c6f772e706e67" alt="Redux流程图"></p>
+<p>从Redux的流程图来看，redux的整体思想还是不难理解的<br>只是当遇到各种为了同构而设计得较为繁琐的API、为了相对高效率地获得状态树的局部状态而引入的第三方库时，<br>难免有些地方迷糊<br>因此总结一下学习中的要点，备查</p>
+<p><a href="https://github.com/happypoulp/redux-tutorial" target="_blank" rel="noopener">推荐教程</a><br><a href="http://redux.js.org/" target="_blank" rel="noopener">文档</a></p>
+<h1 id="1-Redux"><a href="#1-Redux" class="headerlink" title="1. Redux"></a>1. Redux</h1><p>Redux主要特点：</p>
+<ul>
+<li>state以单一对象存储在store对象中</li>
+<li>state只读，state变化时应返回新的state而不是更新原state</li>
+<li>使用纯函数reducer执行state更新</li>
+</ul>
+<blockquote>
+<p>state 为单一对象，使得 Redux 只需要维护一棵状态树，服务端很容易初始化状态，易于服务器渲染。state 只能通过 dispatch(action) 来触发更新，更新逻辑由 reducer 来执行</p>
+</blockquote>
+<h2 id="1-1-Action"><a href="#1-1-Action" class="headerlink" title="1.1 Action"></a>1.1 Action</h2><p>action 可以理解为应用向 store 传递的数据信息（一般为用户交互信息）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: ADD_TODO,</span><br><span class="line">    text,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">store.dispatch(addTodo(text))</span><br></pre></td></tr></table></figure>
+<p>如果要处理异步 action，需要使用一些中间件。<br>redux-thunks 和 redux-promise 分别是使用异步回调和 Promise 来解决异步 action 的问题</p>
+<h2 id="1-2-Reducer"><a href="#1-2-Reducer" class="headerlink" title="1.2 Reducer"></a>1.2 Reducer</h2><p>更新state的纯函数，用来执行根据指定 action 来更新 state 的逻辑<br><code>(previousState, action) =&gt; newState</code><br><code>combineReducers(reducers)</code> 可以把多个 reducer 合并成一个 root reducer</p>
+<h2 id="1-3-Store"><a href="#1-3-Store" class="headerlink" title="1.3 Store"></a>1.3 Store</h2><p>store 是一个单一对象：</p>
+<ul>
+<li>管理应用的 state</li>
+<li>获取 state <code>store.getState()</code></li>
+<li>触发 state 更新 <code>store.dispatch(action)</code></li>
+<li>注册 state 变化监听器 <code>store.subscribe(listener)</code></li>
+<li>创建store <code>createStore(reducer, [initialState])</code></li>
+</ul>
+<h1 id="2-Middlewares"><a href="#2-Middlewares" class="headerlink" title="2. Middlewares"></a>2. Middlewares</h1><p>dispatch(action) 是一个同步的过程：执行 reducer 更新 state -&gt; 调用 store 的监听处理函数。<br>如果需要在 dispatch 时执行一些异步操作（fetch action data），此时就需要引入 Middleware 解决。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">thunkMiddleware</span>(<span class="params">&#123; dispatch, getState &#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">next</span> =&gt;</span> <span class="function"><span class="params">action</span> =&gt;</span></span><br><span class="line">    <span class="keyword">typeof</span> action === <span class="string">'function'</span> ? action(dispatch, getState) : next(action)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>newDispatch = middleware1(middleware2(...(dispatch)...))</code></p>
+<h1 id="3-react-redux"><a href="#3-react-redux" class="headerlink" title="3. react-redux"></a>3. react-redux</h1><p><a href="http://cn.redux.js.org/docs/react-redux/index.html" target="_blank" rel="noopener">react-redux 文档</a></p>
+<p>API:</p>
+<ul>
+<li><code>&lt;Provider store&gt;</code></li>
+<li><code>connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])</code></li>
+</ul>
+<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><ul>
+<li>action是纯声明式的数据结构，提供事件的所有要素</li>
+<li>reducer是一个匹配函数, 所有的reducer都可以捕捉到action并匹配与自己相关与否，相关就拿走action中的要素进行逻辑处理，修改store中的状态，不相关就不对state做处理原样返回</li>
+<li>store负责存储状态并可以被react api回调，发布action</li>
+<li>react-redux, 提供一个Provider和connect</li>
+<li>Provider是一个普通组件，可以作为顶层app的分发点，传入store属性后，它会将state分发给所有被connect的组件</li>
+<li>connect是一个科里化函数，先接收两个参数（数据绑定mapStateToProps和事件绑定mapDispatchToProps），再接受一个参数（将要绑定的组件本身）</li>
+<li>mapStateToProps：构建好Redux系统的时候，它会被自动初始化，但是你的React组件并不知道它的存在，因此你需要分拣出你需要的Redux状态，所以你需要绑定一个函数，它的参数是state，简单返回你关心的几个值。</li>
+<li>mapDispatchToProps：声明好的action作为回调，也可以被注入到组件里，就是通过这个函数，它的参数是dispatch，通过redux的辅助方法bindActionCreator绑定所有action以及参数的dispatch，就可以作为属性在组件里面作为函数简单使用了，不需要手动dispatch。这个mapDispatchToProps是可选的，如果不传这个参数redux会简单把dispatch作为属性注入给组件，可以手动当做store.dispatch使用。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2016/06/15/Redux%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" data-id="cl7t4sb0e000xou004c0prf97" data-title="Redux学习总结" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-React-Native学习总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/06/11/React-Native%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2016-06-11T08:49:01.000Z" itemprop="datePublished">2016-06-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/06/11/React-Native%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">React-Native学习总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://facebook.github.io/react-native/docs/getting-started.html" target="_blank" rel="noopener">文档</a></p>
+<h1 id="个人学习demo"><a href="#个人学习demo" class="headerlink" title="个人学习demo"></a>个人学习demo</h1><p><a href="https://github.com/xieQin/react-native-learning-starter" target="_blank" rel="noopener">react-native-learning-starter</a></p>
+<p>Android app</p>
+<p>主要实现的功能：</p>
+<ul>
+<li>splash页</li>
+<li>抽屉导航</li>
+<li>带网络请求的ListView</li>
+<li>界面切换及Android 返回按钮控制</li>
+<li>下拉刷新</li>
+</ul>
+<h1 id="总体感受"><a href="#总体感受" class="headerlink" title="总体感受"></a>总体感受</h1><p>如果只是用来实现简单的列表页+详情页，对于不熟悉Native开发的Web前端技术人员来说，React Native还是能很好地完成需求的，网络请求、UI视图交互、页面跳转均提供了很好的支持</p>
+<p>但是如果需要使用PackageManager,ActivityManager等组件的话，就需要通过React Native和Native混合开发了<br>个人觉得对于实现复杂的应用来说，目前的RN社区还是缺乏一些高质量的组件，在找不到好用的组件的情况下，或者说大部分组件拿来后都要大修大改的情况下，实现 App 的效率其实非常低，大家都在忙着做一些基础的控件，很多东西都没有打磨好</p>
+<h1 id="环境配置及安装"><a href="#环境配置及安装" class="headerlink" title="环境配置及安装"></a>环境配置及安装</h1><p>依照<a href="https://facebook.github.io/react-native/docs/getting-started.html" target="_blank" rel="noopener">教程</a>安装即可</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2016/06/11/React-Native%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" data-id="cl7t4sb0h0014ou00tl88r29m" data-title="React-Native学习总结" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/" rel="tag">React-Native</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-react-router使用指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/05/20/react-router%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="article-date">
+  <time class="dt-published" datetime="2016-05-20T09:00:39.000Z" itemprop="datePublished">2016-05-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/05/20/react-router%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">react-router使用指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>react-router 作为react的路由插件，整体使用上我觉得比vue-router更为方便（除了变来变去的api），<br>特别是路由嵌套简洁很多。<br>原文见<a href="https://github.com/reactjs/react-router-tutorial" target="_blank" rel="noopener">react-router-tutorial</a></p>
+<h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install react-router --save</span><br></pre></td></tr></table></figure>
+<h2 id="二、显示路由"><a href="#二、显示路由" class="headerlink" title="二、显示路由"></a>二、显示路由</h2><p>在入口文件处</p>
+<ul>
+<li><p>引入<code>Router</code> 、<code>Route</code>、<code>hashHistory</code></p>
+</li>
+<li><p>render <code>Router</code></p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Router, Route, hashHistory &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"><span class="keyword">import</span> About <span class="keyword">from</span> <span class="string">'./modules/About'</span></span><br><span class="line"><span class="keyword">import</span> Repos <span class="keyword">from</span> <span class="string">'./modules/Repos'</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;/&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;/&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/about"</span> component=&#123;About&#125;/&gt;</span><br><span class="line">  &lt;<span class="regexp">/Router&gt;</span></span><br><span class="line"><span class="regexp">), document.getElementById('app'))</span></span><br></pre></td></tr></table></figure>
+<p>使用history api 管理路由时：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">import</span> &#123; Router, Route, browserHistory &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;browserHistory&#125;&gt;</span><br><span class="line">    &#123;<span class="comment">/* ... */</span>&#125;</span><br><span class="line">  &lt;<span class="regexp">/Router&gt;</span></span><br><span class="line"><span class="regexp">), document.getElementById('app'))</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="三、嵌套路由"><a href="#三、嵌套路由" class="headerlink" title="三、嵌套路由"></a>三、嵌套路由</h2><p>嵌套路由的实现相比vue-router中通过声明子路由的方法简洁直观了很多<br>路由的嵌套与对应组件的嵌套之间是存在对应关系，通过这种对应关系来实现嵌套路由<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;App&gt;       &#123;/*  /          */&#125;</span><br><span class="line">  &lt;Repos&gt;   &#123;/*  /repos     */&#125;</span><br><span class="line">    &lt;Repo/&gt; &#123;/*  /repos/123 */&#125;</span><br><span class="line">  &lt;/Repos&gt;</span><br><span class="line">&lt;/App&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;&gt;</span><br><span class="line">      &#123;<span class="comment">/* make them children of `App` */</span>&#125;</span><br><span class="line">      &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;/&gt;</span><br><span class="line">      &lt;Route path=<span class="string">"/about"</span> component=&#123;About&#125;/&gt;</span><br><span class="line">    &lt;<span class="regexp">/Route&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>Router&gt;</span><br><span class="line">), <span class="built_in">document</span>.getElementById(<span class="string">'app'</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Ghettohub Issues&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;ul role="nav"&gt;</span></span><br><span class="line"><span class="regexp">          &lt;li&gt;&lt;Link to="/</span>about<span class="string">"&gt;About&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">          &lt;li&gt;&lt;Link to="</span>/repos<span class="string">"&gt;Repos&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">        &lt;/ul&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &#123;/* add this */&#125;</span></span><br><span class="line"><span class="string">        &#123;this.props.children&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">    )</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">// ...</span></span><br></pre></td></tr></table></figure>
+<h2 id="四、导航样式"><a href="#四、导航样式" class="headerlink" title="四、导航样式"></a>四、导航样式</h2><p>访问各路由时显示对应的激活样式</p>
+<h4 id="1-Active-Styles"><a href="#1-Active-Styles" class="headerlink" title="1. Active Styles"></a>1. Active Styles</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/about"</span> <span class="attr">activeStyle</span>=<span class="string">&#123;&#123;</span> <span class="attr">color:</span> '<span class="attr">red</span>' &#125;&#125;&gt;</span>About<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/repos"</span> <span class="attr">activeStyle</span>=<span class="string">&#123;&#123;</span> <span class="attr">color:</span> '<span class="attr">red</span>' &#125;&#125;&gt;</span>Repos<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="2-Active-Class-Name"><a href="#2-Active-Class-Name" class="headerlink" title="2. Active Class Name"></a>2. Active Class Name</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/about"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span>&gt;</span>About<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/repos"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span>&gt;</span>Repos<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.active</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-封装成NavLink组件"><a href="#3-封装成NavLink组件" class="headerlink" title="3. 封装成NavLink组件"></a>3. 封装成NavLink组件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"><span class="keyword">import</span> &#123; Link &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> React.createClass(&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">Link</span> &#123;<span class="attr">...this.props</span>&#125; <span class="attr">activeClassName</span>=<span class="string">"active"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/App.js</span></span><br><span class="line"><span class="keyword">import</span> NavLink <span class="keyword">from</span> <span class="string">'./NavLink'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">NavLink</span> <span class="attr">to</span>=<span class="string">"/about"</span>&gt;</span>About<span class="tag">&lt;/<span class="name">NavLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">NavLink</span> <span class="attr">to</span>=<span class="string">"/repos"</span>&gt;</span>Repos<span class="tag">&lt;/<span class="name">NavLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="4-IndexLink"><a href="#4-IndexLink" class="headerlink" title="4. IndexLink"></a>4. IndexLink</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// App.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; IndexLink &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">IndexLink</span> <span class="attr">to</span>=<span class="string">"/"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">IndexLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="5-onlyActiveOnIndex"><a href="#5-onlyActiveOnIndex" class="headerlink" title="5. onlyActiveOnIndex"></a>5. onlyActiveOnIndex</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">"/"</span> <span class="attr">activeClassName</span>=<span class="string">"active"</span> <span class="attr">onlyActiveOnIndex</span>=<span class="string">&#123;true&#125;</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">NavLink</span> <span class="attr">to</span>=<span class="string">"/"</span> <span class="attr">onlyActiveOnIndex</span>=<span class="string">&#123;true&#125;</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">NavLink</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="五、参数传递"><a href="#五、参数传递" class="headerlink" title="五、参数传递"></a>五、参数传递</h2><p>用户获取及传递url中附带的参数<br>有<code>/repos/:userName/:repoName</code>这样的路由</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/Repo.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> React.createClass(&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;&#123;<span class="keyword">this</span>.props.params.repoName&#125;&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// import Repo</span></span><br><span class="line"><span class="keyword">import</span> Repo <span class="keyword">from</span> <span class="string">'./modules/Repo'</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;&gt;</span><br><span class="line">      &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;/&gt;</span><br><span class="line">      &#123;<span class="comment">/* 添加新路由 */</span>&#125;</span><br><span class="line">      &lt;Route path=<span class="string">"/repos/:userName/:repoName"</span> component=&#123;Repo&#125;/&gt;</span><br><span class="line">      &lt;Route path=<span class="string">"/about"</span> component=&#123;About&#125;/&gt;</span><br><span class="line">    &lt;<span class="regexp">/Route&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>Router&gt;</span><br><span class="line">), <span class="built_in">document</span>.getElementById(<span class="string">'app'</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Repos.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; Link &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> React.createClass(&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;Repos&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        &#123;/</span>* 添加跳转链接 *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">        &lt;ul&gt;</span></span><br><span class="line"><span class="regexp">          &lt;li&gt;&lt;Link to="/</span>repos/reactjs/react-router<span class="string">"&gt;React Router&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">          &lt;li&gt;&lt;Link to="</span>/repos/facebook/react<span class="string">"&gt;React&lt;/Link&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">        &lt;/ul&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">    )</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;)</span></span><br></pre></td></tr></table></figure>
+<h2 id="六、设置初始路由"><a href="#六、设置初始路由" class="headerlink" title="六、设置初始路由"></a>六、设置初始路由</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// 从'react-router' 中添加新的引用： `IndexRoute`</span></span><br><span class="line"><span class="keyword">import</span> &#123; Router, Route, hashHistory, IndexRoute &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"><span class="comment">// 添加 Home 组件</span></span><br><span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">'./modules/Home'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">render((</span><br><span class="line">  &lt;Router history=&#123;hashHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">"/"</span> component=&#123;App&#125;&gt;</span><br><span class="line"></span><br><span class="line">      &#123;<span class="comment">/* 将Home组件作为 `/`的子路由添加 */</span>&#125;</span><br><span class="line">      &lt;IndexRoute component=&#123;Home&#125;/&gt;</span><br><span class="line"></span><br><span class="line">      &lt;Route path=<span class="string">"/repos"</span> component=&#123;Repos&#125;&gt;</span><br><span class="line">        &lt;Route path=<span class="string">"/repos/:userName/:repoName"</span> component=&#123;Repo&#125;/&gt;</span><br><span class="line">      &lt;<span class="regexp">/Route&gt;</span></span><br><span class="line"><span class="regexp">      &lt;Route path="/</span>about<span class="string">" component=&#123;About&#125;/&gt;</span></span><br><span class="line"><span class="string">    &lt;/Route&gt;</span></span><br><span class="line"><span class="string">  &lt;/Router&gt;</span></span><br><span class="line"><span class="string">), document.getElementById('app'))</span></span><br></pre></td></tr></table></figure>
+<h2 id="七、触发路由"><a href="#七、触发路由" class="headerlink" title="七、触发路由"></a>七、触发路由</h2><p>使用<code>browserHistory</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// modules/Repos.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; browserHistory &#125; <span class="keyword">from</span> <span class="string">'react-router'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">  handleSubmit(event) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">const</span> path = <span class="string">`/repos/<span class="subst">$&#123;userName&#125;</span>/<span class="subst">$&#123;repo&#125;</span>`</span></span><br><span class="line">    browserHistory.push(path)</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure></p>
+<p>使用<code>Router</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ask for `router` from context</span></span><br><span class="line">  contextTypes: &#123;</span><br><span class="line">    router: React.PropTypes.object</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  handleSubmit(event) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">this</span>.context.router.push(path)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.cherishhsieh.com/2016/05/20/react-router%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" data-id="cl7t4sb0w0021ou00ruf4yeri" data-title="react-router使用指南" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Javascript/">Javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Markdown/">Markdown</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8F%92%E4%BB%B6/">插件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Babel/" rel="tag">Babel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cypress/" rel="tag">Cypress</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eslint/" rel="tag">Eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jquery/" rel="tag">Jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/" rel="tag">React-Native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E8%83%BD/" rel="tag">前端技能</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Babel/" style="font-size: 10px;">Babel</a> <a href="/tags/CSS/" style="font-size: 13.33px;">CSS</a> <a href="/tags/Cypress/" style="font-size: 13.33px;">Cypress</a> <a href="/tags/Eslint/" style="font-size: 10px;">Eslint</a> <a href="/tags/Javascript/" style="font-size: 20px;">Javascript</a> <a href="/tags/Jquery/" style="font-size: 16.67px;">Jquery</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/React/" style="font-size: 16.67px;">React</a> <a href="/tags/React-Native/" style="font-size: 10px;">React-Native</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Vue/" style="font-size: 13.33px;">Vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E8%83%BD/" style="font-size: 10px;">前端技能</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/12/%E4%BD%BF%E7%94%A8Cypress%E8%BF%9B%E8%A1%8C%E5%89%8D%E7%AB%AFe2e%E6%B5%8B%E8%AF%95/">使用Cypress进行前端e2e测试</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/28/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%8E%A5%E5%85%A5%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87/">前端项目接入代码测试覆盖率</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/24/%E4%BD%BF%E7%94%A8React%20Hooks%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">使用React Hooks进行状态管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/23/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%8A%80%E8%83%BDchecklist/">前端工程师技能checklist</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/30/%E7%94%B1Babel%E4%BA%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">由Babel了解编译原理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 xieQin<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
